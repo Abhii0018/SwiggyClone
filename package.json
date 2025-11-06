@@ -10,7 +10,6 @@
   "keywords": [],
   "author": "Abhishek",
   "license": "ISC",
-  "type": "commonjs",
   "devDependencies": {
     "parcel": "^2.16.0"
   },
@@ -18,5 +17,4 @@
     "react": "^19.2.0",
     "react-dom": "^19.2.0"
   }
-  
 }
