@@ -1,0 +1,237 @@
+/node_modules
+
+.while using map for printing all the  cards then always asign key to every card for giving every item to a unique id.
+
+hooks:-whenever a state variable changes react will re-render the componnet.
+
+... operator “spreads out”  :-  ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+const a = [1, 2];
+const b = [3, 4];
+
+const c = [...a, ...b]; // [1, 2, 3, 4]
+Without ..., you would get nested arrays:
+
+const c = [a, b]; // [[1, 2], [3, 4]] ❌
+
+With ..., it merges all items into a single flat array.
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+ 
+useState :-  is a React hook used to add state to a functional component.
+
+It takes an initial value (allRes in this case) and returns an array with two elements:
+
+listOfResturants → the current state (the value stored for this component).
+
+setListOfResturants → a function to update the state.
+
+When you call setListOfResturants(newValue), React will:
+
+Update listOfResturants.
+
+Trigger a re-render of this component so the UI reflects the new state.
+
+. What the diff algorithm does,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+
+
+
+The diff algorithm compares:
+
+The old Virtual DOM (the previous version of your UI)
+
+The new Virtual DOM (after your state or props changed)
+
+and finds the minimal set of changes between them.
+
+Then React updates only those changed parts in the real browser DOM.
+Goal:-
+Update only what’s necessary in the real DOM (for performance)
+
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+An event is any action the user does in the browser — like:
+
+Clicking a button (onClick)
+
+Typing in an input (onChange)
+
+Hovering over something (onMouseEnter)
+
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+
+Two diffrenet way for api call and render
+1) load  -> API  -> render 
+    Process:         
+        Page loads
+        Fetch data from API
+            Render UI only after data is received
+
+2) load  -> render ->  API  -> re-render
+    The first render is related to the user’s past action or last view.
+👉 The update gives the latest info.
+
+What’s used in real-world apps
+
+Most modern apps use approach #2 (render first, fetch after) — it feels faster for users.
+
+Approach #1 is used only when data is critical to render the screen or to SEO-sensitive pages (like server-side rendered pages or static preloads).
+
+Example:-..
+Netflix, Swiggy, Amazon → #2 (show skeletons and load data async)
+Admin dashboards, profile pages → #1 (need complete data before render)
+
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+What is useEffect?
+
+useEffect is a React Hook that lets you run code after your component renders.
+
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+
+
+// js:- Every time JavaScript directly updates the DOM, it can trigger parts of this whole pipeline again.
+
+// 4. How React’s Virtual DOM Fixes This
+
+// React introduces a Virtual DOM layer — a lightweight in-memory copy of the real DOM.
+
+// Here’s what happens instead:
+
+// You update state in React (for example, setCount(count + 1)).
+
+// React updates its virtual DOM (a plain JS object, very fast).
+
+// React diffs the old and new virtual DOMs to find what really changed.
+
+// React batches minimal updates to the real DOM.
+
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+:-The virtual DOM is just plain JavaScript data structures that describe the UI.
+
+React keeps the last rendered virtual tree in memory. When state changes, React produces a new virtual tree by re-running the components that should run. That new tree is compared to the old one to decide the minimal set of real DOM mutations needed.
+
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+3) Two-phase model: Render phase and Commit phase
+
+React separates updates into two conceptual phases:
+
+Render phase (work phase)
+
+React calls your components (functional components run their functions) and builds a new virtual tree (and associated Fiber nodes).
+
+This is pure JavaScript work. No browser DOM mutations occur here.
+
+React can pause, resume, or abort this work. That’s why it can be interrupted for higher-priority tasks.
+
+Commit phase
+
+After deciding what changed, React performs the real DOM mutations. This is where appendChild, removeChild, setAttribute, or textContent updates actually happen.
+
+Commit is synchronous: once it starts, React does the DOM writes and then runs lifecycle effects (like useLayoutEffect, then painting, then useEffect callbacks).
+
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+How diffing (reconciliation) works — the core idea
+
+React’s reconciliation is a tree comparison algorithm that relies on a few heuristics to be fast:
+
+Same type = reuse DOM node
+If oldNode.type === newNode.type (both are div, both are MyComponent, etc.), React will try to reuse the existing DOM node and only update props/children as needed.
+
+Different type = replace
+If types differ (div → span or Button → input), React will unmount the old subtree and mount the new one (remove old DOM nodes, create new ones).
+
+Shallow comparison of props for updates
+For reused nodes, React updates changed attributes (textContent, attributes, event listeners) and leaves unchanged attributes alone.
+
+Children reconciliation
+For children arrays React uses index-based comparison by default, but with keys it uses keys to match children across renders (see next section). It tries to minimize insertions/removals by moving or updating nodes.
+
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+5) Keys: why they matter for lists
+
+When you render arrays, e.g. items.map(...), React needs a way to match the previous children to the new children. If you don’t supply a stable key, React falls back to index-based matching, which is fragile.
+
+Example:
+
+items.map(item => <li key={item.id}>{item.text}</li>)
+
+
+Keys let React know that item with id=7 in the old list corresponds to id=7 in the new list.
+
+With keys, React can move DOM nodes instead of destroying/creating them, which preserves DOM state (focus, selection, input values) and reduces cost.
+
+Bad key: using index when items can be inserted/removed. That forces unnecessary re-creation and can cause bugs.
+
+
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Batching: reducing the number of renders
+
+Batching is the process of grouping multiple state updates into a single render pass.
+
+Example without batching (conceptually):
+setCount(c => c + 1);
+setFlag(true);
+
+If each setX caused a separate render, React would build and commit twice. Batching ensures these updates are applied together, producing one render.
+Important details:
+
+React batches updates that happen within the same tick or same React-managed event. Historically this was event handlers; modern React extends automatic batching to more cases (so multiple updates in promises, timeouts, etc., may be batched depending on React version).
+
+Batching means building a single new virtual tree that includes all updates, diffing once, and committing once. That reduces work and layout thrashing.
+
+You can force immediate update using utilities like flushSync (use sparingly) which bypass batching and commit synchronously.
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+
+Low priority updates (like data fetching results that are not critical to the current UI) can be deferred.
+
+You rarely need to interact with the scheduler directly, but you benefit from:
+
+startTransition API to mark updates as low priority (smooth UX during transitions).
+
+Hooks like useDeferredValue for deprioritizing derived values.
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+What gets written to the DOM — minimal operations
+
+After diffing, React only applies what's necessary. Typical operations:
+
+Create nodes for new elements.
+
+Remove nodes for deleted elements.
+
+Update attributes, event handlers, or text for modified elements.
+
+Move nodes when children are reordered (with keys).
+
+This minimal approach reduces layout and paint costs. If only text changes, React will update the text node rather than re-creating parent elements.
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Effects ordering and paint
+
+Commit phase runs in this order (simplified):
+
+DOM mutations (apply updates).
+
+useLayoutEffect callbacks (synchronous, before paint).
+
+Browser paints (visual update).
+
+useEffect callbacks (async, after paint).
+
+useLayoutEffect exists because sometimes you need to read layout and synchronously adjust DOM before the user sees the frame. useEffect is for non-blocking effects.
+
+
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+index.html  →  loads main.jsx
+main.jsx     →  imports App.jsx and attaches it to #root
+App.jsx      →  returns JSX (UI)
+React        →  converts JSX → Virtual DOM → Real DOM updates
+
+
+index.html
+   ↓
+<div id="root"></div>
+   ↓
+main.jsx attaches React to it
+   ↓
+<App /> component renders inside it
+   ↓
+Browser shows "Hello React Developer"
+
+
+

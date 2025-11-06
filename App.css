@@ -1,0 +1,165 @@
+*{
+    margin: 2px;
+    padding: 0px;
+    box-sizing: border-box;
+    font-family: "Zalando Sans Expanded", sans-serif;
+}
+.header{
+    display:flex;
+    justify-content: space-between;
+    border: 2px solid black;
+    background-color: rgb(251, 249, 247);
+    border-style: none;
+    /* margin-bottom: 20px;; */
+    
+}
+
+
+.logo{
+    width:150px;
+    border-radius: 50%;
+}
+
+.nav-bar{
+    font-size: 23px;
+    padding-top: 30px;
+
+}
+
+.nav-items{
+    display:flex;
+    
+}
+.nav-items > li{
+    margin:10px;
+    padding:10px;
+    list-style-type: none;
+    transition: transform 0.5s ease;
+    
+}
+.nav-items > li:hover{
+    cursor: pointer;
+    transform: scale(1.05);
+}
+.res-cont{
+   display: flex;
+   flex-wrap: wrap;
+   justify-content: center;
+   gap:40px;
+   /* margin: 150px; */
+   /* margin: 35px 150px 5px 150px; */
+    padding-left: 100px;
+    padding-right: 100px;
+    padding-top: 35px;
+    padding-bottom: 5px;
+   
+}
+.res-card{
+    display:flex;
+    flex-direction: column;
+    justify-content: space-around;
+    width:560px;
+    height:700px;
+    /* margin: 5px 10px 5px 10px; */
+    margin-top: 5px;
+    margin-bottom: 15px;
+   
+
+    transition: transform 0.3s ease;  
+
+}
+.res-card:hover{
+    cursor: pointer;
+    /* border:2px solid black; */
+    border-radius: 10px;
+    transform: scale(1.02);
+    
+}
+.about-res{
+    min-height:140px;
+}
+
+.food{
+    padding:5px;
+    width:550px;
+    height:390px;
+    border-radius: 15px;
+}
+.res-name{
+    font-size:29px;
+}
+.res-info{
+    display: flex;
+    justify-content: space-between;
+    padding:5px;
+}
+.ratings{
+    font-weight: 600;
+    font-size: 20px;
+}
+.time{
+    font-weight: 500;
+    font-size: 18px;
+    
+}
+.cuisines{
+    font-weight: 400;
+    font-size: 20px;
+    padding:5px;
+}
+.discount{
+    padding:5px;
+    border:2px solid;
+    font-weight: 400;
+    border-radius: 7%;
+    text-align: center;
+    background-color: rgb(137, 234, 122);
+    border-style: none;
+
+}
+.off{
+    font-weight: 500;
+    font-size: 25px;
+}
+.location{
+    font-weight: 500;
+    font-size: 25px;
+    padding:2px;
+
+}
+.area-name{
+    font-weight: 300;
+    font-size: 25px;
+}
+.cost{
+    margin-top: auto;
+    font-weight: 500;
+    font-size: 25px;
+    text-align: center;
+    border:1px solid black;
+    border-style: none;  
+    padding:5px;
+    border-radius: 10px;
+    transition: transform 0.3s ease;
+    background-color: rgba(225, 17, 17, 0.714);
+
+}
+.cost:hover{
+    cursor: pointer;
+    transform:scale(1.03); 
+    border-style: none;    
+}
+
+.rateFilter{
+    font-size: 20px;
+    margin: 15px;
+    padding: 10px;
+    background-color: rgb(220, 54, 54);
+    border-radius: 20%;
+    transition: transform 0.3s ease;
+}
+
+.rateFilter:hover{
+    cursor: pointer;
+    transform: scale(1.03);
+}
